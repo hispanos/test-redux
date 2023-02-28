@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2';
 import { deleteProduct } from '../../redux/actions/productAction';
 import ProductForm from './ProductForm';
 
@@ -12,7 +13,24 @@ const Products = () => {
     const products = useSelector((store) => store.productReducer);
 
     const handleDelete = (idProduct) => {
-        dispatch(deleteProduct(idProduct))
+        Swal.fire({
+            title: 'Estás seguro de eliminar el procuto?',
+            text: "Esta acción no se puede revertir!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, Eliminar!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+            dispatch(deleteProduct(idProduct))
+              Swal.fire(
+                'Eliminado con éxito!',
+                'El producto se ha eliminado.',
+                'success'
+              )
+            }
+          })
     }
 
     return (
